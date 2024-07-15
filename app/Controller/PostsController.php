@@ -2,6 +2,7 @@
 
 class PostsController extends AppController{
     public $helpers = array('Html','Form');
+
     public function index() {
        
         $this->set('posts',$this->Post->find('all'));
@@ -16,11 +17,25 @@ class PostsController extends AppController{
     public function add(){
         if ($this->request->is('post')){
             if($this->Post->save($this->request->data)){
-                $this->Session->setFlash('Succsess!');
-                $this->redirt(array('action'=>'index'));
+                $this->Session->setFlash('Success!');
+                $this->redirect(array('action'=>'index'));
             }else{
-                $this->Session->setFlash('faild!')
+                $this->Session->setFlash('Faild!');
             }
         }
     }
+
+    public function edit($id = null){
+        $this->Post->$id;
+        if($this->request->is('get')){
+            $this->request->data = $this->Post->read();
+        }else{
+            if($this->Post->save($this->request->data)){
+                $this->Session->setFlash('success!');
+            }else{
+                $this->Session->setFlash('failed!');
+            }
+        }
+    }
+    
 }
